@@ -50,6 +50,10 @@ namespace z {
     struct Wrapper {
         operator b::CellB() const { return b::CellB(5); }
     };
+
+    struct WrapperA {
+        operator a::CellA() const { return a::CellA(5); }
+    };
 }
 
 template <class T>
@@ -74,6 +78,7 @@ int main() {
    f1(std::move(testB));
    f1(std::move(constB));
    (f1)(b::CellB(5));
+   ::f1(b::CellB(5));
    {
        void f1(const b::CellB&);
        f1(b::CellB(5));
@@ -92,7 +97,6 @@ int main() {
    forwardB(testB);
    f1(true ? testB : b::CellB(5));
    f1(z::Wrapper{});
-   std::cout << "BREAK" << std::endl;
    f2(testA);
    f2({5});
    f2(a::CellA(5));
@@ -101,6 +105,7 @@ int main() {
    f2(static_cast<const a::CellA&>(a::CellA(5)));
    f2(a::CellA{5});
    f2(5);
+   f2(z::WrapperA{});
    passA(a::CellA(5));
    passA(testA);
 }
